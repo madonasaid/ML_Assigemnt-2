@@ -1,0 +1,37 @@
+%% Initialization
+clear; close all; clc
+clc;close all ; clear;
+
+
+ dataSet = readtable('data2.csv');
+
+ dataSet = table2cell(dataSet);
+
+
+x = dataSet(:, 1:13);
+x = cell2mat( x );
+y = dataSet(:, 14);
+y = cell2mat( y );
+
+[m, n] = size(X);
+
+
+X = [ones(m, 1) X];
+
+
+initial_theta = zeros(n + 1, 1);
+
+[cost, grad] = costFunction(initial_theta, X, y);
+
+
+options = optimset('GradObj', 'on', 'MaxIter', 400);
+
+
+[theta, cost] = ...
+	fminunc(@(t)(costFunction(t, X, y)), initial_theta, options);
+
+
+prob = sigmoid([1 45 85] * theta);
+
+
+p = predict(theta, X);
